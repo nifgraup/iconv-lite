@@ -160,26 +160,39 @@ function toSingleByteEncoding(str) {
     str = ensureString(str);
     
     var buf = new Buffer(str.length);
-    var revCharsBuf = this.options.revCharsBuf;
-    for (var i = 0; i < str.length; i++)
-        buf[i] = revCharsBuf[str.charCodeAt(i)];
+    var bufView = new Int8Array(buf);
+    var revView = new Int8Array(this.options.revCharsBuf);
+    for (var i = 0, _len = str.length; i < _len; i++)
+        bufView[i] = revView[str.charCodeAt(i)];
     
     return buf;
 }
+
+// We use single buffer for all single byte decodings. Allocation takes time.
+var tmpBuf = new Buffer(65536),
+    tmpBufView = new Int16Array(tmpBuf);
 
 function fromSingleByteEncoding(buf) {
     buf = ensureBuffer(buf);
     
     // Strings are immutable in JS -> we use ucs2 buffer to speed up computations.
-    var charsBuf = this.options.charsBuf;
-    var newBuf = new Buffer(buf.length*2);
-    var idx1 = 0, idx2 = 0;
-    for (var i = 0, _len = buf.length; i < _len; i++) {
-        idx1 = buf[i]*2; idx2 = i*2;
-        newBuf[idx2] = charsBuf[idx1];
-        newBuf[idx2+1] = charsBuf[idx1+1];
+    var charsView = new Int16Array(this.options.charsBuf);
+    var s = "";
+    var bufIdx = 0, fullTmpBufs = Math.floor(buf.length / tmpBufView.length);
+
+    for (var i = 0; i < fullTmpBufs; i++) {
+        for (var j = 0, _len = tmpBufView.length; j < _len; j++) {
+            tmpBufView[j] = charsView[buf[bufIdx++]];
+        }
+        s += tmpBuf.toString('ucs2');
     }
-    return newBuf.toString('ucs2');
+
+    var remainingChars = buf.length - bufIdx;
+    for (var j = 0; j < remainingChars; j++) {
+        tmpBufView[j] = charsView[buf[bufIdx++]];
+    }
+    
+    return s + tmpBuf.toString('ucs2', 0, remainingChars*2);
 }
 
 // Add aliases to convert functions
