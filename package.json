@@ -3,7 +3,7 @@
     "description": "Convert character encodings in pure javascript.",
     "version": "0.2.11",
     "license": "MIT",
-    
+
     "keywords": ["iconv", "convert", "charset"],
     "author": "Alexander Shtuchkin <ashtuchkin@gmail.com>",
     "contributors": [
@@ -18,7 +18,7 @@
         "Lee Treveil (https://github.com/leetreveil)",
         "Brian White (https://github.com/mscdex)"
     ],
-    
+
     "main": "index.js",
     "homepage": "https://github.com/ashtuchkin/iconv-lite",
     "repository": {
@@ -29,10 +29,13 @@
         "node": ">=0.4.0"
     },
     "scripts": {
-      "test": "vows --spec"
+        "test": "vows --spec"
     },
     "devDependencies": {
         "vows": "",
         "iconv": ">=1.1"
+    },
+    "dependencies": {
+        "amdefine": ">=0.0.8"
     }
 }
