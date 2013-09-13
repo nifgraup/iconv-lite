@@ -212,10 +212,10 @@ define(function(require) {
 
     function loadEncodings() {
         if (!iconv.encodingsLoaded) {
-            [require('./encodings/singlebyte'),
-                require('./encodings/gbk'),
-                require('./encodings/big5'),
-                require('./encodings/filemapping')
+            [require('./singlebyte'),
+                require('./gbk'),
+                require('./big5'),
+                require('./filemapping')
             ].forEach(function(encodings) {
                 for (var key in encodings)
                     iconv.encodings[key] = encodings[key]

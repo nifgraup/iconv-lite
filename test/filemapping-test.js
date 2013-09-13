@@ -53,7 +53,7 @@ vows.describe("CP949 tests").addBatch({
 	},
 
 	"compare with iconv result": function() {
-		var mapfolder = path.join(path.dirname(module.filename), "../encodings/filemapping");
+		var mapfolder = path.join(path.dirname(module.filename), "filemapping");
 		var files = fs.readdirSync(mapfolder);
 		var t;
 		for (i=0; i<files.length; i++)
