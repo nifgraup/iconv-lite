@@ -19,7 +19,7 @@
         "Brian White (https://github.com/mscdex)"
     ],
 
-    "main": "index.js",
+    "main": "iconv-lite.js",
     "homepage": "https://github.com/ashtuchkin/iconv-lite",
     "repository": {
         "type": "git",
